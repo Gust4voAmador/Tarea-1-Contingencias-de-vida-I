@@ -5,20 +5,24 @@ date: "2024-04-14"
 output: html_document
 ---
 
+# Ejercicio 1
+
 ```{r}
 #importar la tabla de probabilidad de muerte segun su numero de años de hombres
 library(readxl)
-Male <- read_excel("C:/Users/AMADOR/OneDrive - Universidad de Costa Rica/I-2024/Contingencias de vida I/Tareas/Tarea 1/Male.xlsx")
+Male <- read_excel("/Users/sofiabocker/Desktop/universidad/UCR/Actuariales/Cuarto año/I Ciclo/Contingencias de Vida I/tarea_contingencias/Tarea-1-Contingencias-de-vida-I/Male.xlsx")
 View(Male)
 ```
 
 ```{r}
-#importar la tabla de probabilidad de muerte segun su numero de años de hombres
+#importar la tabla de probabilidad de muerte segun su numero de años de mujeres
 library(readxl)
-Female <- read_excel("C:/Users/AMADOR/OneDrive - Universidad de Costa Rica/I-2024/Contingencias de vida I/Tareas/Tarea 1/Female.xlsx")
+Female <- read_excel("/Users/sofiabocker/Desktop/universidad/UCR/Actuariales/Cuarto año/I Ciclo//Contingencias de Vida I/tarea_contingencias/Tarea-1-Contingencias-de-vida-I/Female.xlsx")
 View(Female)
 
 ```
+
+# Ejercicio 2
 
 ```{r}
 #kpx que calcule la probabilidad de que un individuo de edad x sobreviva k años.
@@ -26,7 +30,7 @@ View(Female)
 #de mortalidad, w la edad final de la tabla (en este caso es 120)
 
 kpx <- function(x, k, qx, w){
-  #formula tPx = (x+t)Po/xPo
+  #formula kPx = (x+k)Po/xPo
   if(k+x > w){
     return(0)
   }
@@ -44,11 +48,13 @@ kpx <- function(x, k, qx, w){
 }
   
 #prueba
-pepe <- kpx(1, 120, Male, 120)
+pepe <- kpx(21, 54, Female, 120)
 print(pepe)
 
-
 ```
+
+# Ejercicio 3
+
 ```{r}
 #la esperanza de Kx se denota como e_x = \sum^{\infty}_{k=0} {kPr[kx=k]} =
 # \sum^{\infty}_{k=0} {k(kpx - k+1px)}
@@ -67,11 +73,132 @@ ex <- function(x, qx, w){
   
 }
 
-prueba_ex <- ex(100, Male, 120)
+prueba_ex <- ex(21, Female, 120)
 
 print(prueba_ex)
 
 ```
+
+# Ejercicio 4
+
+## Funciones de sobrevivencia de mujeres
+
+```{r}
+
+# crea un vector con todas las k posibles (1 a 119)
+valores_k <- seq(1, 119, by = 1)
+
+# crea un vector con las edades que se quieren reflejar en el gráfico
+edades = c(1, 25, 50, 75, 100)
+
+# crea un gráfico vacío 
+plot(NULL, xlim = c(1, 119), ylim = c(0, 1), 
+     xlab = "k", ylab = "Probabilidad de sobrevivencia", 
+     main = "Probabilidad de sobrevivencia mujeres", type = "n")
+
+# itera sobre el vector edades 
+for (i in edades) {
+  
+  # crea un vector del largo de la cantidad de k (119)
+  prob_sobrevivencia <- numeric(119)
+  
+  # itera sobre la cantidad de k para calcular la probabilidad de sobrevivencia que una persona de edad i sobreviva k años para todos los k
+  for (j in 1:119) {
+    prob_sobrevivencia[j] <- kpx(i, j, Female, 120)
+  }
+  
+  lines(valores_k, prob_sobrevivencia, type = "l", 
+        col = rainbow(length(edades))[which(edades == i)],
+        lty = 1,
+        lwd = 2)
+}
+
+legend(x = "topright",
+       legend = paste("x =", edades),
+       col = rainbow(length(edades)),
+       lty = 1,
+       lwd = 2)
+
+```
+## Funciones de sobrevivencia de hombres
+
+```{r}
+# crea un vector con todas las k posibles (1 a 119)
+valores_k <- seq(1, 119, by = 1)
+
+# crea un vector con las edades que se quieren reflejar en el gráfico
+edades = c(1, 25, 50, 75, 100)
+
+# crea un gráfico vacío 
+plot(NULL, xlim = c(1, 119), ylim = c(0, 1), 
+     xlab = "k", ylab = "Probabilidad de sobrevivencia", 
+     main = "Probabilidad de sobrevivencia hombres", type = "n")
+
+# itera sobre el vector edades 
+for (i in edades) {
+  
+  # crea un vector del largo de la cantidad de k (119)
+  prob_sobrevivencia <- numeric(119)
+  
+  # itera sobre la cantidad de k para calcular la probabilidad de sobrevivencia que una persona de edad i sobreviva k años para todos los k
+  for (j in 1:119) {
+    prob_sobrevivencia[j] <- kpx(i, j, Male, 120)
+  }
+  
+  
+  lines(valores_k, prob_sobrevivencia, type = "l", 
+        col = rainbow(length(edades))[which(edades == i)],
+        lty = 1,
+        lwd = 2)
+}
+
+legend(x = "topright",
+       legend = paste("x =", edades),
+       col = rainbow(length(edades)),
+       lty = 1,
+       lwd = 2)
+
+```
+
+# Ejercicio 5
+
+## Esperanza de vida de mujeres
+
+```{r}
+
+tabla_esperanzas_female <- data.frame(Edad = numeric(), 'Esperanza Mujeres' = numeric())
+
+
+for (i in 1:120) {  
+  
+  esperanza <- ex(i, Female, 120)
+  tabla_esperanzas_female[nrow(tabla_esperanzas_female) + 1, ] <- c(i, esperanza)
+  
+}
+
+print(tabla_esperanzas_female)
+
+```
+
+## Esperanza de vida de hombres
+
+```{r}
+
+tabla_esperanzas_male <- data.frame(Edad = numeric(), 'Esperanza Hombres' = numeric())
+
+
+for (i in 1:120) {  
+  
+  esperanza <- ex(i, Male, 120)
+  tabla_esperanzas_male[nrow(tabla_esperanzas_male) + 1, ] <- c(i, esperanza)
+  
+}
+
+print(tabla_esperanzas_male)
+
+```
+
+# Ejercicio 6
 
 
 
