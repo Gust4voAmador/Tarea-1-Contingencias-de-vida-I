@@ -1,0 +1,50 @@
+---
+title: "Tarea_conti_1_1.0"
+author: "Gustavo Amador Fonseca C20451"
+date: "2024-04-14"
+output: html_document
+---
+
+```{r}
+#importar la tabla de probabilidad de muerte segun su numero de años de hombres
+library(readxl)
+Male <- read_excel("C:/Users/AMADOR/OneDrive - Universidad de Costa Rica/I-2024/Contingencias de vida I/Tareas/Tarea 1/Male.xlsx")
+View(Male)
+```
+
+```{r}
+#importar la tabla de probabilidad de muerte segun su numero de años de hombres
+library(readxl)
+Female <- read_excel("C:/Users/AMADOR/OneDrive - Universidad de Costa Rica/I-2024/Contingencias de vida I/Tareas/Tarea 1/Female.xlsx")
+View(Female)
+
+```
+
+```{r}
+#kpx que calcule la probabilidad de que un individuo de edad x sobreviva k años.
+#x la edad en años cumplidos, k los años enteros de sobrevivencia, qx la tabla 
+#de mortalidad, w la edad final de la tabla (en este caso es 120)
+
+kpx <- function(x, k, qx, w){
+  #formula tPx = (x+t)Po/xPo
+  
+  xpo <- 1 #iniciar variable
+  
+  for (i in x:k) { 
+    xqo <- as.numeric(qx[ i,2]) #convertir a numeros para no dar problemas
+    xpo <- xpo * (1- xqo) #sacar la proba de sobrevivencia
+  }  
+  
+  return(xpo)
+}
+  
+#prueba
+pepe <- kpx(1, 95, Male, 120)
+print(pepe)
+
+
+```
+
+
+
+
