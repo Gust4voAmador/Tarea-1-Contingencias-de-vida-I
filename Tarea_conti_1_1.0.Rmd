@@ -27,23 +27,52 @@ View(Female)
 
 kpx <- function(x, k, qx, w){
   #formula tPx = (x+t)Po/xPo
+  if(k+x > w){
+    return(0)
+  }
+  else{
+    xpo <- 1 #iniciar variable
   
-  xpo <- 1 #iniciar variable
-  
-  for (i in x:k) { 
-    xqo <- as.numeric(qx[ i,2]) #convertir a numeros para no dar problemas
-    xpo <- xpo * (1- xqo) #sacar la proba de sobrevivencia
-  }  
+    for (i in x:k) { 
+      xqo <- as.numeric(qx[ i,2]) #convertir a numeros para no dar problemas
+      xpo <- xpo * (1- xqo) #sacar la proba de sobrevivencia
+    }  
   
   return(xpo)
+  }
+  
 }
   
 #prueba
-pepe <- kpx(1, 95, Male, 120)
+pepe <- kpx(1, 120, Male, 120)
 print(pepe)
 
 
 ```
+```{r}
+#la esperanza de Kx se denota como e_x = \sum^{\infty}_{k=0} {kPr[kx=k]} =
+# \sum^{\infty}_{k=0} {k(kpx - k+1px)}
+
+ex <- function(x, qx, w){
+  esperanza <- 0
+  anos_max <- w-x
+  
+  for(i in 1:anos_max ){
+  
+      esperanza <- esperanza + i*(kpx(x, i, qx, w) - kpx(x, i+1, qx, w))
+
+  }
+  
+  return(esperanza)
+  
+}
+
+prueba_ex <- ex(100, Male, 120)
+
+print(prueba_ex)
+
+```
+
 
 
 
