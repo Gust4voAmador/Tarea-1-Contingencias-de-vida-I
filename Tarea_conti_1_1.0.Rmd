@@ -10,14 +10,14 @@ output: html_document
 ```{r}
 #importar la tabla de probabilidad de muerte segun su numero de años de hombres
 library(readxl)
-Male <- read_excel("/Users/sofiabocker/Desktop/universidad/UCR/Actuariales/Cuarto año/I Ciclo/Contingencias de Vida I/tarea_contingencias/Tarea-1-Contingencias-de-vida-I/Male.xlsx")
+Male <- read_excel("C:/Users/AMADOR/OneDrive - Universidad de Costa Rica/I-2024/Contingencias de vida I/Tareas/Tarea 1/Male.xlsx")
 View(Male)
 ```
 
 ```{r}
 #importar la tabla de probabilidad de muerte segun su numero de años de mujeres
 library(readxl)
-Female <- read_excel("/Users/sofiabocker/Desktop/universidad/UCR/Actuariales/Cuarto año/I Ciclo//Contingencias de Vida I/tarea_contingencias/Tarea-1-Contingencias-de-vida-I/Female.xlsx")
+Female <- read_excel("C:/Users/AMADOR/OneDrive - Universidad de Costa Rica/I-2024/Contingencias de vida I/Tareas/Tarea 1/Female.xlsx")
 View(Female)
 
 ```
@@ -37,8 +37,8 @@ kpx <- function(x, k, qx, w){
   else{
     xpo <- 1 #iniciar variable
   
-    for (i in x:k) { 
-      xqo <- as.numeric(qx[ i,2]) #convertir a numeros para no dar problemas
+    for (i in x: (x+k-1)) { 
+      xqo <- as.double(qx[ i,2]) #convertir a numeros para no dar problemas
       xpo <- xpo * (1- xqo) #sacar la proba de sobrevivencia
     }  
   
@@ -52,6 +52,8 @@ pepe <- kpx(21, 54, Female, 120)
 print(pepe)
 
 ```
+
+
 
 # Ejercicio 3
 
