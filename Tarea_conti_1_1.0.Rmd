@@ -88,13 +88,13 @@ print(prueba_ex)
 ```{r}
 
 # crea un vector con todas las k posibles (1 a 119)
-valores_k <- seq(1, 119, by = 1)
+valores_k <- seq(1, 120, by = 1)
 
 # crea un vector con las edades que se quieren reflejar en el gráfico
 edades = c(1, 25, 50, 75, 100)
 
 # crea un gráfico vacío 
-plot(NULL, xlim = c(1, 119), ylim = c(0, 1), 
+plot(NULL, xlim = c(1, 120), ylim = c(0, 1), 
      xlab = "k", ylab = "Probabilidad de sobrevivencia", 
      main = "Probabilidad de sobrevivencia mujeres", type = "n")
 
@@ -105,9 +105,10 @@ for (i in edades) {
   prob_sobrevivencia <- numeric(119)
   
   # itera sobre la cantidad de k para calcular la probabilidad de sobrevivencia que una persona de edad i sobreviva k años para todos los k
-  for (j in 1:119) {
-    prob_sobrevivencia[j] <- kpx(i, j, Female, 120)
+  for (j in 1:120) {
+    prob_sobrevivencia[j] <- kpx(i, j-1, Female, 120)
   }
+  
   
   lines(valores_k, prob_sobrevivencia, type = "l", 
         col = rainbow(length(edades))[which(edades == i)],
@@ -126,13 +127,13 @@ legend(x = "topright",
 
 ```{r}
 # crea un vector con todas las k posibles (1 a 119)
-valores_k <- seq(1, 119, by = 1)
+valores_k <- seq(1, 120, by = 1)
 
 # crea un vector con las edades que se quieren reflejar en el gráfico
 edades = c(1, 25, 50, 75, 100)
 
 # crea un gráfico vacío 
-plot(NULL, xlim = c(1, 119), ylim = c(0, 1), 
+plot(NULL, xlim = c(1, 120), ylim = c(0, 1), 
      xlab = "k", ylab = "Probabilidad de sobrevivencia", 
      main = "Probabilidad de sobrevivencia hombres", type = "n")
 
@@ -143,8 +144,8 @@ for (i in edades) {
   prob_sobrevivencia <- numeric(119)
   
   # itera sobre la cantidad de k para calcular la probabilidad de sobrevivencia que una persona de edad i sobreviva k años para todos los k
-  for (j in 1:119) {
-    prob_sobrevivencia[j] <- kpx(i, j, Male, 120)
+  for (j in 1:120) {
+    prob_sobrevivencia[j] <- kpx(i, j-1, Male, 120)
   }
   
   
